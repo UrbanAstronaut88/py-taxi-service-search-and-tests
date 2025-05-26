@@ -13,26 +13,46 @@ class SearchTests(TestCase):
         )
         self.client.force_login(self.user)
 
-        self.manufacturer = Manufacturer.objects.create(name="Toyota", country="Japan")
-        self.car = Car.objects.create(model="Corolla", manufacturer=self.manufacturer)
+        self.manufacturer = Manufacturer.objects.create(
+            name="Toyota",
+            country="Japan"
+        )
+        self.car = Car.objects.create(
+            model="Corolla",
+            manufacturer=self.manufacturer
+        )
         self.car.drivers.add(self.user)
 
         self.driver2 = get_user_model().objects.create_user(
-            username="johnny", password="pass456", license_number="XYZ67890"
+            username="johnny",
+            password="pass456",
+            license_number="XYZ67890"
         )
 
     def test_search_driver_by_username(self):
-        response = self.client.get(reverse("taxi:driver-list"), {"username": "driver1"})
+        response = self.client.get(reverse(
+            "taxi:driver-list"),
+            {"username": "driver1"}
+        )
         self.assertContains(response, "driver1")
 
     def test_search_car_by_model(self):
-        response = self.client.get(reverse("taxi:car-list"), {"model": "Corolla"})
+        response = self.client.get(reverse(
+            "taxi:car-list"),
+            {"model": "Corolla"}
+        )
         self.assertContains(response, "Corolla")
 
     def test_search_manufacturer_by_name(self):
-        response = self.client.get(reverse("taxi:manufacturer-list"), {"name": "Toyota"})
+        response = self.client.get(reverse(
+            "taxi:manufacturer-list"),
+            {"name": "Toyota"}
+        )
         self.assertContains(response, "Toyota")
 
     def test_search_driver_by_license_number(self):
-        response = self.client.get(reverse("taxi:driver-list"), {"license_number": "johnny"})
+        response = self.client.get(reverse(
+            "taxi:driver-list"),
+            {"license_number": "johnny"}
+        )
         self.assertContains(response, "johnny")
