@@ -112,8 +112,8 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
         search_query = self.request.GET.get("q")
         if search_query:
             queryset = queryset.filter(
-                Q(username__icontains=search_query) |
-                Q(license_number__icontains=search_query)
+                Q(username__icontains=search_query)
+                | Q(license_number__icontains=search_query)
             )
         return queryset
 
