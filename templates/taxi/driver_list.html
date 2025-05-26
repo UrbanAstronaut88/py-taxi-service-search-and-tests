@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h1>
@@ -7,6 +8,14 @@
         Create
       </a>
     </h1>
+
+    <form method="get" action="" class="mb-4">
+      <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search by username" value="{{ request.GET.q }}">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+
 
     {% if driver_list %}
     <table class="table">
