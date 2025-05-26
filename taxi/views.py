@@ -110,7 +110,9 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
         if username:
             queryset = queryset.filter(username__icontains=username)
         if license_number:
-            queryset = queryset.filter(license_number__icontains=license_number)
+            queryset = queryset.filter(
+                license_number__icontains=license_number
+            )
         return queryset
 
 
