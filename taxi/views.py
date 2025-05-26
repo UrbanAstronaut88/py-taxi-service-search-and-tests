@@ -1,4 +1,6 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -37,10 +39,10 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        name = self.request.GET.get("name")
-        if name:
-            queryset = queryset.filter(name__icontains=name)
+        queryset = Manufacturer.objects.all()
+        q = self.request.GET.get("q")
+        if q:
+            queryset = queryset.filter(name__icontains=q)
         return queryset
 
 
@@ -69,10 +71,12 @@ class CarListView(LoginRequiredMixin, generic.ListView):
     template_name = "taxi/car_list.html"
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        model = self.request.GET.get("model")
-        if model:
-            queryset = queryset.filter(model__icontains=model)
+        queryset = Car.objects.select_related(
+            "manufacturer"
+        ).prefetch_related("drivers")
+        q = self.request.GET.get("q")
+        if q:
+            queryset = queryset.filter(model__icontains=q)
         return queryset
 
 
@@ -104,14 +108,11 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "driver_list"
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        username = self.request.GET.get("username")
-        license_number = self.request.GET.get("license_number")
-        if username:
-            queryset = queryset.filter(username__icontains=username)
-        if license_number:
+        queryset = get_user_model().objects.all()
+        q = self.request.GET.get("q")
+        if q:
             queryset = queryset.filter(
-                license_number__icontains=license_number
+                Q(username__icontains=q) | Q(license_number__icontains=q)
             )
         return queryset
 

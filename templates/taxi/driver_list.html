@@ -11,12 +11,8 @@
 
     <form method="get" action="" class="mb-4">
       <div class="input-group mb-2">
-        <input type="text" name="username" class="form-control" placeholder="Search by username" value="{{ request.GET.username }}">
+        <input type="text" name="q" class="form-control" placeholder="Search by username or license number" value="{{ request.GET.q }}">
       </div>
-      <div class="input-group mb-2">
-        <input type="text" name="license_number" class="form-control" placeholder="Search by license number" value="{{ request.GET.license_number }}">
-      </div>
-      <button class="btn btn-primary" type="submit">Search</button>
     </form>
 
     {% if driver_list %}

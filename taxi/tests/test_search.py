@@ -32,27 +32,27 @@ class SearchTests(TestCase):
     def test_search_driver_by_username(self):
         response = self.client.get(reverse(
             "taxi:driver-list"),
-            {"username": "driver1"}
+            {"q": "driver1"}
         )
         self.assertContains(response, "driver1")
 
     def test_search_car_by_model(self):
         response = self.client.get(reverse(
             "taxi:car-list"),
-            {"model": "Corolla"}
+            {"q": "Corolla"}
         )
         self.assertContains(response, "Corolla")
 
     def test_search_manufacturer_by_name(self):
         response = self.client.get(reverse(
             "taxi:manufacturer-list"),
-            {"name": "Toyota"}
+            {"q": "Toyota"}
         )
         self.assertContains(response, "Toyota")
 
     def test_search_driver_by_license_number(self):
         response = self.client.get(reverse(
             "taxi:driver-list"),
-            {"license_number": "XYZ67890"}
+            {"q": "XYZ67890"}
         )
         self.assertContains(response, "johnny")
